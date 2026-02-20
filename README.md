@@ -1,188 +1,220 @@
-# AgroGuard AI - Complete Production-Ready Hackathon Project
+# AgroGuard AI — Smart Agriculture Platform
 
 <p align="center">
-  <strong>🌾 AI-Powered Smart Agriculture System</strong>
-  <br>
-  Crop Recommendation • Disease Detection • IoT Monitoring
+  <strong>🌾 AI-Powered Smart Farming System by CoderPirates</strong><br>
+  Crop Recommendation &bull; Disease Detection &bull; IoT Monitoring &bull; Government Scheme Access &bull; Live Mandi Prices
 </p>
 
 ---
 
 ## 📋 Project Overview
 
-AgroGuard AI is a **complete production-ready full-stack system** for modern agriculture that combines:
+AgroGuard AI is a **complete production-ready full-stack smart farming platform** built for Indian farmers.
+It combines AI/ML, IoT sensor monitoring, and direct integration with **5 Indian government agricultural portals** — all accessible in **5 regional languages** from a beautiful Flutter mobile app.
 
-- 🤖 **Machine Learning** (Crop recommendation with RandomForest)
-- 🔍 **Computer Vision** (Plant disease detection with CNN)
-- 📡 **IoT Integration** (Real-time sensor monitoring)
-- 📱 **Beautiful Mobile UI** (Flutter with Material Design 3)
-- ⚡ **RESTful API** (Flask backend with comprehensive endpoints)
-
-**Perfect for:** Hackathons, Agriculture Tech Startups, Educational Projects, MVP Development
+| Layer | Technology | Status |
+|-------|-----------|--------|
+| Mobile App | Flutter (Dart) | ✅ Live |
+| Backend API | Python Flask | ✅ Live |
+| ML Models | scikit-learn + TensorFlow/Keras | ✅ (with fallback) |
+| Govt Integrations | eNAM · Agmarknet · mKisan · myScheme · PMFBY | ✅ Live |
+| Multi-language | English · Hindi · Punjabi · Tamil · Bengali | ✅ Live |
 
 ---
 
 ## ✨ Key Features
 
-### 🌱 Intelligent Crop Recommendation
-- Input soil parameters (NPK levels)
-- Input weather conditions (temperature, humidity, pH, rainfall)
-- AI-powered crop suggestions with confidence scores
-- Specific crop requirements display
+### 🌱 AI Crop Recommendation
+- Input soil NPK levels + weather conditions
+- RandomForest ML model suggests the best crop with confidence scores
+- Crop-specific requirement display
+- Mock fallback model when ML model file is not present
 
-### 🔍 AI-Powered Disease Detection
-- Real-time plant disease identification
-- Image-based analysis using CNN
-- Treatment and prevention recommendations
-- Coverage of 40+ common plant diseases
+### 🔍 AI Disease Detection
+- Upload or capture a plant leaf photo
+- CNN-based image analysis identifies the disease
+- Shows symptoms, treatment protocols, and prevention tips
+- Covers **40+ plant diseases** across 14 crop families
 
-### 📊 Smart IoT Sensor Dashboard
-- Real-time monitoring of 9 sensor types
-  - Soil: N, P, K levels, pH, soil moisture
-  - Environmental: Temperature, humidity, light intensity, rainfall
-- Intelligent alert system
-- Status indicators (Optimal/Caution/Alert)
-- Historical data tracking
+### 📡 IoT Sensor Dashboard
+- Real-time monitoring of **9 sensor metrics**:
+  - Soil: Nitrogen, Phosphorus, Potassium, pH, Moisture
+  - Environment: Temperature, Humidity, Light Intensity, Rainfall
+- Color-coded status: Optimal / Caution / Alert
+- Auto-refresh every 5 s with threshold-based alert system and historical tracking
 
-### 🎨 Production-Ready UI
-- Material Design 3 implementation
-- Beautiful green agriculture theme
-- Smooth animations and transitions
-- Fully responsive design
-- Cross-platform (Android, iOS, Web)
+### 🏛️ Government Portal Hub *(NEW)*
+
+Central hub linking all 5 Indian government agricultural portals from one screen:
+
+| Module | Portal | What it does |
+|--------|--------|-------------|
+| 📊 Mandi Prices | eNAM + Agmarknet | Live commodity prices, cross-mandi comparison, price trends, seasonal calendar, market alerts |
+| 📜 Scheme Checker | myScheme | Farmer fills profile → AI matches eligible government schemes and subsidies |
+| 🛡️ Crop Insurance | PMFBY | Premium calculator (crop/season/area), claim status tracker, enrollment deadlines |
+| 📢 Advisory Feed | mKisan | Government advisories on weather, pest, crop management, market, and schemes |
+| 💰 Market Alerts | Agmarknet | Price spike/fall alerts, commodity trend analysis, 6-month trend charts |
+
+### 🌐 Multi-Language Support *(NEW)*
+
+Full UI available in **5 languages** — every screen, label, button, and error message:
+
+| Flag | Language |
+|------|----------|
+| 🇬🇧 | English |
+| 🇮🇳 | Hindi (हिन्दी) |
+| 🇮🇳 | Punjabi (ਪੰਜਾਬੀ) |
+| 🇮🇳 | Tamil (தமிழ்) |
+| 🇧🇩 | Bengali (বাংলা) |
+
+Language toggle is in the app bar on every screen. Powered by a global `AppLang` ValueNotifier — updates the entire UI instantly without a restart.
 
 ---
 
 ## 📦 Project Structure
 
 ```
-AgroTechHACKATHON/
+AgroGuard-AI/
 │
-├── 📘 SETUP_GUIDE.md                    # Complete installation guide
-├── 📘 README.md (this file)             # Project overview
-│
-├── 🔧 smartcrop_backend/                # Flask REST API Server
+├── smartcrop_backend/                  # Flask REST API Server
 │   ├── app.py                          # Main WSGI application
 │   ├── requirements.txt                # Python dependencies
-│   ├── smartcrop.log                   # Application logs
 │   ├── services/
-│   │   ├── crop_service.py             # ML crop recommendation
-│   │   ├── disease_service.py          # CNN disease detection
-│   │   └── iot_service.py              # Sensor simulator
-│   ├── datasets/
-│   │   └── treatment_data.csv          # 40+ disease database
-│   ├── models/
-│   │   ├── crop_model.pkl              # RandomForest model
-│   │   └── disease_model.h5            # TensorFlow CNN model
-│   └── README.md                       # API documentation
+│   │   ├── crop_service.py             # RandomForest crop recommendation
+│   │   ├── disease_service.py          # CNN disease detection (40+ diseases)
+│   │   └── iot_service.py              # 9-sensor IoT simulator
+│   ├── govt_integrations/              # ← NEW: Govt Portal Backend
+│   │   ├── govt_routes.py              # Blueprint — 20+ govt API routes
+│   │   ├── enam_scraper.py             # eNAM mandi prices & commodity data
+│   │   ├── agmarknet_scraper.py        # Agmarknet trends & market alerts
+│   │   ├── mkisan_fetcher.py           # mKisan government advisories
+│   │   ├── myscheme_scraper.py         # myScheme eligibility checker
+│   │   └── pmfby_checker.py            # PMFBY insurance calculator
+│   └── datasets/
+│       └── treatment_data.csv          # Disease treatment database
 │
-├── 📱 smartcrop_mobile/                 # Flutter Mobile Application
-│   ├── lib/
-│   │   ├── main.dart                   # App initialization
-│   │   └── screens/                    # Beautiful UI screens
-│   │       ├── home_screen.dart
-│   │       ├── crop_recommendation_screen.dart
-│   │       ├── disease_detection_screen.dart
-│   │       └── sensor_dashboard_screen.dart
-│   ├── web/
-│   │   └── index.html                  # Web deployment
-│   ├── pubspec.yaml                    # Flutter deps
-│   ├── analysis_options.yaml           # Lint rules
-│   ├── .gitignore
-│   └── README.md                       # Mobile app docs
-│
-└── 📊 flutter_app/                      # Previous React/Flutter frontend
-    └── (Legacy UI - main app is smartcrop_mobile/)
+└── smartcrop_mobile/                   # Flutter Mobile Application
+    └── lib/
+        ├── main.dart                   # App entry, Material 3 theme
+        ├── core/
+        │   └── lang_provider.dart      # ← NEW: 5-language translation engine
+        ├── screens/
+        │   ├── home_screen.dart
+        │   ├── crop_recommendation_screen.dart
+        │   ├── disease_detection_screen.dart
+        │   ├── sensor_dashboard_screen.dart
+        │   ├── govt_portal_screen.dart     # ← NEW: Govt Hub
+        │   ├── mandi_price_screen.dart     # ← NEW: eNAM + Agmarknet
+        │   ├── scheme_checker_screen.dart  # ← NEW: myScheme eligibility
+        │   ├── insurance_screen.dart       # ← NEW: PMFBY calculator
+        │   └── advisory_feed_screen.dart   # ← NEW: mKisan advisories
+        └── services/
+            └── govt_api_service.dart   # ← NEW: Govt API client
 ```
 
 ---
 
-## 🚀 Quick Start (5 Minutes)
+## 🚀 Quick Start
 
 ### Prerequisites
-- **Python 3.8+** (for backend)
-- **Flutter 3.0+** (for mobile)
-- **One terminal window** to run backend
-- **Another terminal window** for Flutter
+- **Python 3.9+** (backend)
+- **Flutter 3.0+** (mobile)
 
-### 1. Start Backend API
-
+### 1. Start Backend
 ```bash
 cd smartcrop_backend
-python -m venv venv
-
-# Windows
-venv\Scripts\activate
-
-# macOS/Linux
-source venv/bin/activate
-
 pip install -r requirements.txt
 python app.py
 ```
+Backend: **http://localhost:5000**
 
-✅ Backend runs on: `http://localhost:5000`
-
-### 2. Start Flutter Mobile App
-
+### 2. Start Flutter App
 ```bash
 cd smartcrop_mobile
 flutter pub get
-flutter run
+flutter run                                 # device / emulator
+flutter run -d edge --web-port 8080         # browser
 ```
-
-✅ App launches on your device/simulator!
-
----
-
-## 📚 Documentation
-
-| Document | Purpose |
-|----------|---------|
-| [SETUP_GUIDE.md](SETUP_GUIDE.md) | Detailed installation & configuration |
-| [smartcrop_backend/README.md](smartcrop_backend/README.md) | Backend API documentation |
-| [smartcrop_mobile/README.md](smartcrop_mobile/README.md) | Flutter app documentation |
 
 ---
 
 ## 🔌 API Endpoints
 
-All endpoints are documented with examples. Base URL: `http://localhost:5000`
+Base URL: `http://localhost:5000`
 
-### Health Check
-```
-GET /health
-GET /api/status
-```
+### Core ML Endpoints
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/health` | Health check |
+| GET | `/api/status` | Service status |
+| POST | `/api/predict_crop` | Crop recommendation |
+| POST | `/api/predict_disease` | Disease detection from image |
+| GET | `/api/sensor_data` | Live IoT sensor readings |
 
-### Crop Recommendation
-```
-POST /api/predict_crop
-Content-Type: application/json
+### Government Portal Endpoints *(NEW)*
 
-{
-  "nitrogen": 50,
-  "phosphorus": 30,
-  "potassium": 40,
-  "temperature": 25,
-  "humidity": 70,
-  "ph": 7,
-  "rainfall": 200
-}
-```
+**eNAM — Mandi Prices**
 
-### Disease Detection
-```
-POST /api/predict_disease
-Content-Type: multipart/form-data
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/govt/mandi/prices` | Prices (`?state=&commodity=&mandi=`) |
+| GET | `/api/govt/mandi/compare/<commodity>` | Cross-mandi comparison |
+| GET | `/api/govt/mandi/states` | Available states |
+| GET | `/api/govt/mandi/commodities` | Commodities with MSP info |
+| GET | `/api/govt/mandi/mandis/<state>` | Mandis in a state |
 
-[Upload leaf image]
-```
+**Agmarknet — Market Analysis**
 
-### Sensor Data
-```
-GET /api/sensor_data
-```
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/govt/market/trend/<commodity>` | Price trend (`?months=6`) |
+| GET | `/api/govt/market/alerts` | Market price alerts |
+| GET | `/api/govt/market/calendar` | Seasonal buy/sell calendar |
+
+**mKisan — Government Advisories**
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/govt/advisory/feed` | Advisories (`?category=&state=`) |
+| GET | `/api/govt/advisory/categories` | Advisory categories |
+
+**myScheme — Scheme Eligibility**
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/govt/schemes/list` | All schemes (`?state=&farmer_type=`) |
+| POST | `/api/govt/schemes/check` | Farmer eligibility check |
+
+**PMFBY — Crop Insurance**
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/govt/insurance/crops` | Insurable crops |
+| POST | `/api/govt/insurance/premium` | Premium calculator |
+| GET | `/api/govt/insurance/status/<app_id>` | Claim status |
+| GET | `/api/govt/insurance/deadlines` | Enrollment deadlines |
+
+**Dashboard**
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/govt/dashboard` | Aggregated govt portal summary |
+
+---
+
+## 📱 Mobile App Screens
+
+| Screen | Description |
+|--------|-------------|
+| **Home** | Hero section, 6 feature cards, navigation hub |
+| **Crop Recommendation** | 7-field form → AI crop suggestion with confidence bar |
+| **Disease Detection** | Camera/gallery upload → disease + treatment card |
+| **Sensor Dashboard** | 9-sensor grid, 5 s live refresh, colour-coded alerts |
+| **Govt Portal Hub** | *(NEW)* Central screen linking all 5 govt integrations |
+| **Mandi Prices** | *(NEW)* Live prices, cross-mandi comparison, price trends, seasonal calendar |
+| **Scheme Checker** | *(NEW)* Profile form → matched schemes with benefit and link |
+| **Crop Insurance** | *(NEW)* PMFBY premium calculator, claim tracker, deadlines |
+| **Advisory Feed** | *(NEW)* mKisan advisories filtered by category and state |
 
 ---
 
@@ -192,414 +224,238 @@ GET /api/sensor_data
 | Technology | Purpose |
 |-----------|---------|
 | **Flask** | RESTful API framework |
-| **scikit-learn** | RandomForest ML model |
-| **TensorFlow/Keras** | CNN deep learning |
-| **Pillow** | Image processing |
-| **NumPy/Pandas** | Data processing |
+| **scikit-learn** | RandomForest crop recommendation |
+| **TensorFlow / Keras** | CNN plant disease detection |
+| **OpenCV + Pillow** | Image preprocessing |
+| **NumPy / Pandas** | Data processing |
+| **BeautifulSoup + lxml** | Govt portal data scraping |
+| **SQLite (govt_cache.db)** | Govt data caching |
 
 ### Frontend
 | Technology | Purpose |
 |-----------|---------|
-| **Flutter** | Cross-platform mobile app |
-| **Dart** | Flutter programming language |
-| **Material Design 3** | UI components & theme |
-| **HTTP package** | API communication |
-| **image_picker** | Camera & gallery access |
-
-### Infrastructure
-| Technology | Purpose |
-|-----------|---------|
-| **Python venv** | Environment isolation |
-| **Docker** | Containerization ready |
-| **Cloud Ready** | Heroku/AWS/GCP compatible |
+| **Flutter** | Cross-platform mobile + web |
+| **Dart** | Programming language |
+| **Material Design 3** | UI components and theming |
+| **ValueNotifier** | Reactive multi-language state |
+| **HTTP package** | REST API client |
+| **image_picker** | Camera and gallery access |
 
 ---
 
-## 📊 Features in Detail
+## 🏛️ Government Integrations — Detail
 
-### Backend Services
+### 1. eNAM (National Agriculture Market)
+- Live commodity prices from mandis across all Indian states
+- Filter by state, mandi, and commodity
+- Minimum Support Price (MSP) reference for each commodity
+- Cross-mandi price comparison to help farmers choose the best market
 
-#### 1. CropRecommender Service
-- **Input:** 7 soil/weather parameters
-- **Output:** Recommended crop + confidence
-- **Model:** RandomForest classifier
-- **Fallback:** Mock predictions if model unavailable
+### 2. Agmarknet (Agricultural Marketing)
+- Historical price trend charts (1–12 months)
+- Market alerts for significant price movements (spike / fall)
+- Seasonal buy/sell calendar — best time to sell each crop
 
-#### 2. DiseaseDetector Service
-- **Input:** Leaf image (any format)
-- **Processing:** Auto resizing to 224x224
-- **Output:** Disease + confidence + treatment info
-- **Database:** 40+ diseases with:
-  - Symptoms description
-  - Treatment protocols
-  - Prevention strategies
+### 3. mKisan (Mobile Kisaan)
+- Government SMS advisory feed
+- Categories: Weather warnings, Pest alerts, Crop management, Scheme announcements, Market updates
+- Severity levels: Info / Warning / Alert — filterable by state and category
 
-#### 3. IOTSimulator Service
-- **Simulates:** 9 sensor types
-- **Tracking:** Historical data (last 100 readings)
-- **Alerts:** Threshold-based notifications
-- **Updates:** Real-time sensor values
+### 4. myScheme (Government Scheme Portal)
+- 20+ central and state government schemes database
+- Eligibility checker — inputs: age, land holding, state, gender, farmer type
+- Returns matched schemes with description, benefit amount, and application link
+- Covers PM-KISAN, Kisan Credit Card, Soil Health Card, PMFBY, and more
 
-### Mobile App Screens
-
-#### Home Screen
-- Welcome hero section
-- Feature card grid (4 main features)
-- About section
-- Easy navigation
-
-#### Crop Recommendation Screen
-- Clean form with 7 input fields
-- Input validation
-- POST to backend
-- Displays result with confidence bar
-- Error handling & retry
-
-#### Disease Detection Screen
-- Image picker (camera/gallery)
-- Image preview
-- Upload and detection
-- Results with:
-  - Disease name
-  - Confidence score
-  - Symptoms
-  - Treatment recommendations
-  - Prevention strategies
-
-#### Sensor Dashboard
-- 9-sensor grid view
-- Color-coded status (Green/Orange/Red)
-- Real-time updates (5-second auto-refresh)
-- Manual refresh button
-- Alert notifications
-- Progress indicators for each sensor
+### 5. PMFBY (Pradhan Mantri Fasal Bima Yojana)
+- **Premium Calculator** — crop + season (Kharif/Rabi/Zaid) + area → premium + sum insured
+- **Claim Status Tracker** — enter application ID to check claim processing status
+- **Enrollment Deadlines** — upcoming cutoff dates by season
 
 ---
 
-## 💾 Database & Data
+## 🌐 Multi-Language Support — Detail
 
-### Treatment Database (treatment_data.csv)
-Contains 40+ entries with:
-- Disease name
-- Crop type
-- Symptoms
-- Treatment protocols
-- Prevention methods
+Custom `AppLang` + `AppStrings` system — zero external packages required:
 
-**Covered Crops:**
-- Apple, Blueberry, Cherry, Corn
-- Grape, Orange, Peach, Pepper
-- Potato, Raspberry, Soybean
-- Squash, Strawberry, Tomato
+- **Languages**: English, Hindi, Punjabi, Tamil, Bengali
+- **Scope**: All 9 screens, every label, button, tooltip, and message
+- **Switching**: Language picker in app bar → instant UI update via `ValueListenableBuilder`
+- **Architecture**: Single `lang_provider.dart` with all translations in one map (~1200 lines)
 
 ---
 
 ## 🎨 Design System
 
-### Color Palette
-- **Primary Green:** #2ecc71 (agriculture/growth)
-- **Dark Green:** #27ae60 (accent)
-- **Light Green:** #E0F5E9 (backgrounds)
-- **Warning:** #e74c3c (alerts)
-- **Info:** #2196F3 (information)
-
-### Design Principles
-- Material Design 3 compliance
-- Accessibility standards
-- Smooth animations
-- Responsive layouts
-- Dark mode ready (future enhancement)
+| Element | Value |
+|---------|-------|
+| Primary Green | `#2ecc71` |
+| Dark Green | `#27ae60` |
+| Background | `#FAFAF5` |
+| Alert Red | `#e74c3c` |
+| Warning Amber | `#E9A23B` |
+| Card Radius | 16 dp |
 
 ---
 
-## 📈 Performance
+## 🔒 Security & Reliability
 
-### Backend Performance
-- Crop prediction: **< 200ms**
-- Disease detection: **< 500ms**
-- Sensor data: **< 50ms**
-- Max concurrent: **100+ requests**
-- Memory: **~150MB**
-
-### Mobile Performance
-- Startup: **< 2 seconds**
-- Frame rate: **60 FPS**
-- Memory: **~100MB**
-- Battery: **Minimal impact**
+- Input validation on all backend endpoints
+- File type and size validation for image uploads (max 16 MB)
+- CORS enabled for cross-origin Flutter web requests
+- Graceful fallbacks: ML services degrade to mock predictions if models are not loaded
+- Government data cached in SQLite to minimise external API dependency
 
 ---
 
-## 🔒 Security Features
+## 📊 Project Stats
 
-✅ Input validation on all endpoints
-✅ Error handling & logging
-✅ CORS support for frontend
-✅ File type validation for images
-✅ Request size limits
-✅ SQL injection prevention (if DB added)
-
-**For Production:**
-- Enable HTTPS/SSL
-- Add API authentication
-- Implement rate limiting
-- Use environment variables for secrets
+| Metric | Value |
+|--------|-------|
+| Total screens | 9 |
+| Backend API routes | 25+ |
+| Supported languages | 5 |
+| Government portals integrated | 5 |
+| Diseases in database | 40+ |
+| IoT sensor types | 9 |
+| Supported platforms | Android, iOS, Web |
+| Avg API response time | < 500 ms |
 
 ---
 
-## 🐳 Docker Support
+## 🧪 Testing the API
 
-Backend is Docker-ready. Create `Dockerfile`:
+```bash
+# Health check
+curl http://localhost:5000/health
+
+# Crop prediction
+curl -X POST http://localhost:5000/api/predict_crop \
+  -H "Content-Type: application/json" \
+  -d '{"nitrogen":60,"phosphorus":25,"potassium":45,"temperature":28,"humidity":75,"ph":7.0,"rainfall":215}'
+
+# Mandi prices — Wheat in Punjab
+curl "http://localhost:5000/api/govt/mandi/prices?state=Punjab&commodity=Wheat"
+
+# Scheme eligibility
+curl -X POST http://localhost:5000/api/govt/schemes/check \
+  -H "Content-Type: application/json" \
+  -d '{"age":35,"land_acres":2.5,"state":"Punjab","gender":"male","farmer_type":"small"}'
+
+# PMFBY premium
+curl -X POST http://localhost:5000/api/govt/insurance/premium \
+  -H "Content-Type: application/json" \
+  -d '{"crop":"Wheat","season":"Rabi","area_acres":2.0}'
+
+# mKisan advisories
+curl "http://localhost:5000/api/govt/advisory/feed?category=weather&state=Punjab"
+```
+
+---
+
+## 🐳 Docker
 
 ```dockerfile
-FROM python:3.9-slim
+FROM python:3.11-slim
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
+EXPOSE 5000
 CMD ["python", "app.py"]
+```
+
+```bash
+docker build -t agroguard-backend .
+docker run -p 5000:5000 agroguard-backend
 ```
 
 ---
 
 ## ☁️ Cloud Deployment
 
-### Deploy Backend
-
-**Heroku:**
 ```bash
-heroku create smartcrop-api
-heroku config:set FLASK_ENV=production
-git push heroku main
-```
+# Heroku
+heroku create agroguard-api && git push heroku main
 
-**AWS (Elastic Beanstalk):**
-```bash
-eb init
-eb create smartcrop-env
-```
+# Google Cloud Run
+gcloud run deploy agroguard-api --source .
 
-**Google Cloud Run:**
-```bash
-gcloud run deploy smartcrop-api
-```
-
-### Deploy Mobile App
-
-**Google Play Store:**
-```bash
-flutter build appbundle --release
-# Upload build/app/outputs/bundle/release/app-release.aab
-```
-
-**Apple App Store:**
-```bash
-flutter build ios --release
-# Use Xcode to upload to App Store Connect
-```
-
-**Web:**
-```bash
+# Flutter Web
 flutter build web --release
-# Deploy build/web/ to static hosting (Netlify, Firebase, etc)
+# → deploy build/web/ to Firebase Hosting, Netlify, or Vercel
+
+# Android
+flutter build appbundle --release
+
+# iOS
+flutter build ios --release
 ```
-
----
-
-## 🧪 Testing
-
-### Backend Testing
-```bash
-# Test API endpoints
-curl http://localhost:5000/health
-
-# Test crop prediction
-curl -X POST http://localhost:5000/api/predict_crop \
-  -H "Content-Type: application/json" \
-  -d '{"nitrogen":40,"phosphorus":30,"potassium":35,"temperature":25,"humidity":70,"ph":7,"rainfall":200}'
-
-# Test sensor data
-curl http://localhost:5000/api/sensor_data
-```
-
-### Mobile Testing
-1. Navigate to each screen
-2. Test all input fields
-3. Verify API integration
-4. Test error states
-5. Verify UI responsiveness
 
 ---
 
 ## 🚨 Troubleshooting
 
-### "Connection refused" error
-- Verify backend is running: `curl http://localhost:5000/health`
-- Check if port 5000 is available
-- Use machine's IP address on mobile device
-
-### Image picker not working
-- **Android:** Add permissions to `AndroidManifest.xml`
-- **iOS:** Add to `Info.plist`
-- **Web:** Browser must allow camera/storage access
-
-### Backend won't start
-- Check Python version: `python --version` (need 3.8+)
-- Verify dependencies: `pip list`
-- Check port conflicts: `netstat -tuln | grep 5000`
-
-**See [SETUP_GUIDE.md](SETUP_GUIDE.md) for detailed troubleshooting**
+| Issue | Fix |
+|-------|-----|
+| Connection refused | Check backend is running: `curl http://localhost:5000/health` |
+| Govt data not loading | Check internet; SQLite cache serves as fallback |
+| Image picker not working | Add permissions to `AndroidManifest.xml` / `Info.plist` |
+| Language not changing | Ensure `ValueListenableBuilder` wraps the full widget tree |
+| TensorFlow not found | Python 3.13 is unsupported by TF; disease detection uses mock fallback |
 
 ---
 
-## 📝 API Examples
+## 📝 Changelog
 
-### Example 1: Predict Crop for Rice Season
-```bash
-curl -X POST http://localhost:5000/api/predict_crop \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nitrogen": 60,
-    "phosphorus": 25,
-    "potassium": 45,
-    "temperature": 28,
-    "humidity": 75,
-    "ph": 7.0,
-    "rainfall": 215
-  }'
-```
+### v2.0 — Government Portal & Language Update
+- Added 5 government portal integrations (eNAM, Agmarknet, mKisan, myScheme, PMFBY)
+- Added `govt_portal_screen.dart` — central navigation hub
+- Added `mandi_price_screen.dart` — live prices, cross-mandi comparison, trends
+- Added `scheme_checker_screen.dart` — farmer scheme eligibility checker
+- Added `insurance_screen.dart` — PMFBY premium calculator and claim tracker
+- Added `advisory_feed_screen.dart` — mKisan advisory feed with category filter
+- Added `lang_provider.dart` — 5-language translation engine (EN / HI / PA / TA / BN)
+- Added 20+ new backend API routes in `govt_routes.py`
+- Fixed `CardTheme` → `CardThemeData` for Flutter 3.35 compatibility
 
-**Response:**
-```json
-{
-  "crop": "Rice",
-  "confidence": 0.95,
-  "crop_info": {
-    "nitrogen_needed": "60-80",
-    "phosphorus_needed": "20-40",
-    ...
-  }
-}
-```
-
-### Example 2: Detect Disease
-```bash
-curl -X POST http://localhost:5000/api/predict_disease \
-  -F "image=@tomato_leaf.jpg"
-```
-
-**Response:**
-```json
-{
-  "disease": "Tomato_late_blight",
-  "confidence": 0.94,
-  "symptoms": "Water-soaked spots on leaves, rapid spread",
-  "treatment": "Apply mancozeb fungicide, improve ventilation",
-  "prevention": "Avoid overhead watering, ensure spacing"
-}
-```
-
----
-
-## 🎓 Educational Value
-
-This project demonstrates:
-- ✅ Full-stack development (backend + frontend)
-- ✅ Machine learning integration
-- ✅ Mobile app development
-- ✅ REST API design
-- ✅ Real-time data updates
-- ✅ Image processing
-- ✅ Error handling & logging
-- ✅ Cross-platform development
-- ✅ Production-ready code structure
-- ✅ Clean architecture principles
-
----
-
-## 📜 License
-
-© 2025 Smart Agriculture. All rights reserved.
+### v1.0 — Initial Release
+- Crop recommendation (RandomForest ML)
+- Disease detection (CNN, 40+ diseases)
+- IoT sensor dashboard (9 metrics, real-time)
+- Core Flutter app (Android, iOS, Web)
 
 ---
 
 ## 🤝 Contributing
 
-This is a complete production-ready template. Feel free to:
-- Fork and customize
-- Add real ML models (currently using mock fallbacks)
-- Integrate with real IoT devices
-- Add user authentication
-- Implement database persistence
-- Deploy to cloud
+1. Fork the repository
+2. Create a branch: `git checkout -b feature/your-feature`
+3. Commit: `git commit -m "feat: your feature"`
+4. Push and open a Pull Request
 
 ---
 
-## 📞 Support
+## 📜 License
 
-**For Issues:**
-1. Check [SETUP_GUIDE.md](SETUP_GUIDE.md) troubleshooting section
-2. Verify backend is running
-3. Check network connectivity
-4. Review application logs
-
-**Backend logs:** `smartcrop_backend/smartcrop.log`
-
----
-
-## 🎯 Next Steps
-
-1. ✅ **Backend API** - COMPLETE
-   - Flask server with 6 endpoint categories
-   - ML services with fallbacks
-   - IoT simulator
-   - Treatment database
-
-2. ✅ **Flutter Mobile App** - COMPLETE
-   - Home screen with navigation
-   - Crop recommendation screen
-   - Disease detection screen
-   - Sensor dashboard screen
-
-3. **Next Phase:**
-   - Integrate real ML models (crop_model.pkl, disease_model.h5)
-   - Add user authentication & profiles
-   - Implement local data persistence
-   - Deploy backend to cloud
-   - Publish mobile app to app stores
-   - Add push notifications
-   - Create admin dashboard
-   - Implement multi-language support
-
----
-
-## 📊 Project Stats
-
-- **Total Lines of Code:** 2000+
-- **Backend Endpoints:** 6+ major routes
-- **Mobile Screens:** 4 beautiful UI screens
-- **Supported Diseases:** 40+
-- **Sensor Types:** 9 different metrics
-- **Supported Platforms:** Android, iOS, Web
-- **API Response Time:** < 500ms average
-- **Mobile Startup:** < 2 seconds
+© 2025–2026 AgroGuard AI by CoderPirates. All rights reserved.
 
 ---
 
 <p align="center">
-  <strong>🌾 Built with ❤️ for Smart Agriculture</strong>
-  <br>
-  Ready for production deployment and hackathon submission
+  <strong>🌾 Built with ❤️ for Indian Farmers — by CoderPirates</strong><br>
+  AI · IoT · Government Schemes · Multi-Language · Production Ready
 </p>
 
 ---
 
 ## Quick Reference
 
-| Need | Command |
+| Task | Command |
 |------|---------|
-| Start Backend | `cd smartcrop_backend && python app.py` |
-| Start Mobile | `cd smartcrop_mobile && flutter run` |
-| Test Endpoints | Check **API Examples** section above |
-| Setup Help | Read [SETUP_GUIDE.md](SETUP_GUIDE.md) |
-| Backend Docs | Read [smartcrop_backend/README.md](smartcrop_backend/README.md) |
-| App Docs | Read [smartcrop_mobile/README.md](smartcrop_mobile/README.md) |
+| Start backend | `cd smartcrop_backend && python app.py` |
+| Start Flutter (web) | `cd smartcrop_mobile && flutter run -d edge --web-port 8080` |
+| Start Flutter (device) | `cd smartcrop_mobile && flutter run` |
+| Test API health | `curl http://localhost:5000/health` |
+| Test mandi prices | `curl http://localhost:5000/api/govt/mandi/prices` |
+| View backend logs | `smartcrop_backend/smartcrop.log` |
