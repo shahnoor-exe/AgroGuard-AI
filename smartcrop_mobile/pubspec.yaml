@@ -1,5 +1,5 @@
 name: smartcrop_mobile
-description: "AgroGuard AI - Your AI-powered farming assistant"
+description: "AgroGuard AI by CoderPirates - Your AI-powered farming assistant"
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -22,3 +22,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/

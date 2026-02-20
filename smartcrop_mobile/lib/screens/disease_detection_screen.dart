@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import '../services/disease_database_service.dart';
+import '../services/disease_translations.dart';
+import '../core/lang_provider.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Disease Detection Screen – Professional Farming Theme + Animations
@@ -177,7 +179,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
       if (!mounted) return;
       if (id != -1) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: const Text('Analysis saved successfully!'), backgroundColor: _primary),
+          SnackBar(content: Text(AppStrings.t('saveSuccess')), backgroundColor: _primary),
         );
         await _loadHistory();
         _notesController.clear();
@@ -194,13 +196,13 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
       context: context,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Delete Analysis', style: TextStyle(color: _deepText)),
-        content: const Text('Remove this record permanently?'),
+        title: Text(AppStrings.t('deleteAnalysis'), style: const TextStyle(color: _deepText)),
+        content: Text(AppStrings.t('deleteConfirm')),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(AppStrings.t('cancel'))),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete', style: TextStyle(color: _sunset)),
+            child: Text(AppStrings.t('delete'), style: const TextStyle(color: _sunset)),
           ),
         ],
       ),
@@ -225,19 +227,21 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
 
   // ── Build ─────────────────────────────────────────────────────────────────
   @override
-  Widget build(BuildContext context) => DefaultTabController(
+  Widget build(BuildContext context) => ValueListenableBuilder<String>(
+    valueListenable: AppLang.current,
+    builder: (context, _, __) => DefaultTabController(
     length: 2,
     child: Scaffold(
       backgroundColor: _cream,
       appBar: AppBar(
         backgroundColor: _primary,
         foregroundColor: Colors.white,
-        title: const Row(
+        title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('🔬', style: TextStyle(fontSize: 20)),
-            SizedBox(width: 8),
-            Text('Disease Detector', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+            const Text('🔬', style: TextStyle(fontSize: 20)),
+            const SizedBox(width: 8),
+            Text(AppStrings.t('diseaseDetectorTitle'), style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
           ],
         ),
         shape: const RoundedRectangleBorder(
@@ -250,9 +254,9 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
           indicatorWeight: 3,
           dividerHeight: 0,
           labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
-          tabs: const [
-            Tab(icon: Icon(Icons.biotech, size: 20), text: 'New Analysis'),
-            Tab(icon: Icon(Icons.history, size: 20), text: 'History'),
+          tabs: [
+            Tab(icon: const Icon(Icons.biotech, size: 20), text: AppStrings.t('newAnalysis')),
+            Tab(icon: const Icon(Icons.history, size: 20), text: AppStrings.t('history')),
           ],
         ),
       ),
@@ -261,7 +265,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
         child: TabBarView(children: [_buildAnalysisTab(), _buildHistoryTab()]),
       ),
     ),
-  );
+  ));
 
   Widget _buildAnalysisTab() => SingleChildScrollView(
     padding: const EdgeInsets.all(18),
@@ -298,8 +302,8 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
                 child: const Icon(Icons.add_photo_alternate, color: _primary, size: 18),
               ),
               const SizedBox(width: 10),
-              const Text('Upload Leaf / Crop Image',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: _deepText)),
+              Text(AppStrings.t('uploadImage'),
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: _deepText)),
             ],
           ),
           const SizedBox(height: 14),
@@ -322,9 +326,9 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
                       children: [
                         Icon(Icons.eco_outlined, size: 48, color: Colors.grey.shade300),
                         const SizedBox(height: 10),
-                        Text('No image selected', style: TextStyle(color: Colors.grey.shade500, fontWeight: FontWeight.w500)),
+                        Text(AppStrings.t('noImageSelected'), style: TextStyle(color: Colors.grey.shade500, fontWeight: FontWeight.w500)),
                         const SizedBox(height: 4),
-                        Text('Take a photo or choose from gallery', style: TextStyle(color: Colors.grey.shade400, fontSize: 12)),
+                        Text(AppStrings.t('takeOrChoose'), style: TextStyle(color: Colors.grey.shade400, fontSize: 12)),
                       ],
                     ),
             ),
@@ -333,13 +337,13 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
           Row(
             children: [
               Expanded(child: _actionButton(
-                icon: Icons.photo_library_outlined, label: 'Gallery',
+                icon: Icons.photo_library_outlined, label: AppStrings.t('gallery'),
                 gradient: const [Color(0xFF264653), Color(0xFF2A9D8F)],
                 onTap: () => _pickImage(ImageSource.gallery),
               )),
               const SizedBox(width: 10),
               Expanded(child: _actionButton(
-                icon: Icons.camera_alt_outlined, label: 'Camera',
+                icon: Icons.camera_alt_outlined, label: AppStrings.t('camera'),
                 gradient: const [Color(0xFF6B4226), Color(0xFFD4A373)],
                 onTap: () => _pickImage(ImageSource.camera),
               )),
@@ -440,13 +444,13 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
           child: TextField(
             controller: _fieldNameController,
             style: const TextStyle(fontSize: 13),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Field name',
-              prefixIcon: const Icon(Icons.landscape_outlined, color: _accent, size: 18),
+              prefixIcon: Icon(Icons.landscape_outlined, color: _accent, size: 18),
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 14),
+              contentPadding: EdgeInsets.symmetric(vertical: 14),
             ),
           ),
         ),
@@ -482,7 +486,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
                 else
                   const Icon(Icons.biotech, color: Colors.white, size: 20),
                 const SizedBox(width: 10),
-                Text(_isLoading ? 'Analysing...' : 'Analyse for Disease',
+                Text(_isLoading ? AppStrings.t('analysing') : AppStrings.t('analyseDisease'),
                   style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white, letterSpacing: 0.3)),
               ],
             ),
@@ -514,10 +518,26 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
     final kb = _localKBMatch;
     final isHealthy = diseaseName.toLowerCase().contains('healthy');
 
+    // ── Translated KB overlay ───────────────────────────────────────────
+    // Look up translated content for the current language. If found, merge
+    // over the English KB so that symptoms/causes/treatment/prevention/
+    // organicOptions display in the user's language.
+    Map<String, dynamic>? tKb;
+    if (kb != null) {
+      final lang = AppLang.current.value;
+      final diseaseKey = diseaseName.toLowerCase().trim();
+      final translated = DiseaseTranslations.getTranslated(diseaseKey, lang);
+      if (translated != null) {
+        tKb = {...kb, ...translated};
+      } else {
+        tKb = kb;
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _sectionHeader(Icons.analytics, 'Analysis Results'),
+        _sectionHeader(Icons.analytics, AppStrings.t('analysisResults')),
         const SizedBox(height: 10),
         // Summary card
         Container(
@@ -595,7 +615,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
               color: kb != null ? _primary : Colors.grey),
             const SizedBox(width: 6),
             Text(
-              kb != null ? 'Matched in local disease database' : 'No local DB match – showing API data only',
+              kb != null ? AppStrings.t('matchedDB') : AppStrings.t('noDBMatch'),
               style: TextStyle(fontSize: 11, color: kb != null ? _primary : Colors.grey, fontStyle: FontStyle.italic),
             ),
           ],
@@ -603,29 +623,29 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
         // Detail cards
         if (kb != null && !isHealthy) ...[
           const SizedBox(height: 16),
-          _detailCard(icon: Icons.sick, title: 'Symptoms', color: const Color(0xFFc0392b), bgColor: const Color(0xFFFFF5F4),
-            items: (kb['symptoms'] as List).cast<String>()),
+          _detailCard(icon: Icons.sick, title: AppStrings.t('symptoms'), color: const Color(0xFFc0392b), bgColor: const Color(0xFFFFF5F4),
+            items: (tKb!['symptoms'] as List).cast<String>()),
           const SizedBox(height: 10),
-          _detailCard(icon: Icons.info_outline, title: 'Cause', color: const Color(0xFFe67e22), bgColor: const Color(0xFFFFF8F0),
-            body: kb['causes'] as String),
+          _detailCard(icon: Icons.info_outline, title: AppStrings.t('cause'), color: const Color(0xFFe67e22), bgColor: const Color(0xFFFFF8F0),
+            body: tKb['causes'] as String),
           const SizedBox(height: 10),
-          _detailCard(icon: Icons.healing, title: 'Treatment', color: const Color(0xFF264653), bgColor: const Color(0xFFF0F7FA),
-            items: (kb['treatment'] as List).cast<String>()),
+          _detailCard(icon: Icons.healing, title: AppStrings.t('treatment'), color: const Color(0xFF264653), bgColor: const Color(0xFFF0F7FA),
+            items: (tKb['treatment'] as List).cast<String>()),
           const SizedBox(height: 10),
-          _detailCard(icon: Icons.eco, title: 'Prevention', color: _primary, bgColor: const Color(0xFFF0FAF0),
-            items: (kb['prevention'] as List).cast<String>()),
+          _detailCard(icon: Icons.eco, title: AppStrings.t('prevention'), color: _primary, bgColor: const Color(0xFFF0FAF0),
+            items: (tKb['prevention'] as List).cast<String>()),
           const SizedBox(height: 10),
-          _detailCard(icon: Icons.spa, title: 'Organic / Bio-control Options', color: const Color(0xFF6B4226), bgColor: const Color(0xFFFAF5EE),
-            items: (kb['organicOptions'] as List).cast<String>()),
+          _detailCard(icon: Icons.spa, title: AppStrings.t('organicOptions'), color: const Color(0xFF6B4226), bgColor: const Color(0xFFFAF5EE),
+            items: (tKb['organicOptions'] as List).cast<String>()),
         ],
         if (isHealthy && kb != null) ...[
           const SizedBox(height: 10),
-          _detailCard(icon: Icons.eco, title: 'Preventive Care', color: _primary, bgColor: const Color(0xFFF0FAF0),
-            items: (kb['prevention'] as List).cast<String>()),
+          _detailCard(icon: Icons.eco, title: AppStrings.t('preventiveCare'), color: _primary, bgColor: const Color(0xFFF0FAF0),
+            items: (tKb!['prevention'] as List).cast<String>()),
         ],
         // Notes + Save
         const SizedBox(height: 22),
-        _sectionHeader(Icons.edit_note, 'Notes & Save'),
+        _sectionHeader(Icons.edit_note, AppStrings.t('notesTitle')),
         const SizedBox(height: 10),
         Container(
           decoration: BoxDecoration(
@@ -639,7 +659,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
               TextField(
                 controller: _notesController,
                 decoration: InputDecoration(
-                  hintText: 'E.g. Field 3, south corner; 30% canopy affected…',
+                  hintText: AppStrings.t('notesHint'),
                   hintStyle: TextStyle(fontSize: 13, color: Colors.grey.shade400),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   prefixIcon: const Icon(Icons.edit_note, color: _accent),
@@ -654,7 +674,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
                 child: ElevatedButton.icon(
                   onPressed: _isLoading ? null : _saveResult,
                   icon: const Icon(Icons.save_alt, size: 18),
-                  label: const Text('Save to History', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                  label: Text(AppStrings.t('saveHistory'), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF264653),
                     foregroundColor: Colors.white,
@@ -760,9 +780,9 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
               child: const Icon(Icons.history_toggle_off, size: 48, color: _accent),
             ),
             const SizedBox(height: 16),
-            const Text('No analyses saved yet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: _deepText)),
+            Text(AppStrings.t('noHistoryYet'), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: _deepText)),
             const SizedBox(height: 6),
-            const Text('Run an analysis and tap Save to History', style: TextStyle(fontSize: 13, color: _softText)),
+            Text(AppStrings.t('noHistoryHint'), style: const TextStyle(fontSize: 13, color: _softText)),
           ],
         ),
       );
@@ -781,14 +801,14 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _statTile('Total', (_statistics!['totalAnalyses'] ?? 0).toString(), _primary),
+                _statTile(AppStrings.t('totalAnalyses'), (_statistics!['totalAnalyses'] ?? 0).toString(), _primary),
                 Container(width: 1, height: 32, color: _primary.withValues(alpha: 0.1)),
-                _statTile('Avg Conf',
+                _statTile(AppStrings.t('avgConf'),
                   '${((_statistics!['averageConfidence'] ?? 0) * 100).toStringAsFixed(0)}%',
                   const Color(0xFF264653)),
                 if ((_statistics!['diseaseCounts'] as List).isNotEmpty) ...[
                   Container(width: 1, height: 32, color: _primary.withValues(alpha: 0.1)),
-                  _statTile('Top Disease',
+                  _statTile(AppStrings.t('topDisease'),
                     (_statistics!['diseaseCounts'] as List).first['disease'].toString().split(' ').first,
                     _sunset),
                 ],
@@ -832,7 +852,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (kb != null) _chip(kb["severity"] as String, _severityColor(kb['severity'] as String?)),
+                        if (kb != null) _chip(kb['severity'] as String, _severityColor(kb['severity'] as String?)),
                         const SizedBox(width: 6),
                         IconButton(
                           icon: const Icon(Icons.delete_outline, color: _sunset, size: 20),
@@ -854,7 +874,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
                                   child: Text('Notes: ${a['notes']}',
                                     style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 13, color: _softText)),
                                 ),
-                              _detailCard(icon: Icons.healing, title: 'Treatment',
+                              _detailCard(icon: Icons.healing, title: AppStrings.t('treatment'),
                                 color: const Color(0xFF264653), bgColor: const Color(0xFFF0F7FA),
                                 items: (kb['treatment'] as List).cast<String>()),
                             ],

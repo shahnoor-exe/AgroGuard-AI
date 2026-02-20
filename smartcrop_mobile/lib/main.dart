@@ -3,13 +3,15 @@ import 'screens/home_screen.dart';
 import 'screens/crop_recommendation_screen.dart';
 import 'screens/disease_detection_screen.dart';
 import 'screens/sensor_dashboard_screen.dart';
+import 'screens/govt_portal_screen.dart';
+import 'core/lang_provider.dart';
 
 void main() {
   runApp(const AgroGuardAIApp());
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// AgroGuard AI – Professional Farming Theme
+// AgroGuard AI by CoderPirates – Professional Farming Theme
 // ─────────────────────────────────────────────────────────────────────────────
 
 class AgroGuardAIApp extends StatelessWidget {
@@ -28,8 +30,10 @@ class AgroGuardAIApp extends StatelessWidget {
   static const Color sunsetOrange   = Color(0xFFE76F51);
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-      title: 'AgroGuard AI',
+  Widget build(BuildContext context) => ValueListenableBuilder<String>(
+      valueListenable: AppLang.current,
+      builder: (_, __, ___) => MaterialApp(
+      title: AppStrings.t('appName'),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -42,19 +46,19 @@ class AgroGuardAIApp extends StatelessWidget {
           surface: creamBg,
         ),
         scaffoldBackgroundColor: creamBg,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: primaryGreen,
           elevation: 0,
           centerTitle: true,
           scrolledUnderElevation: 2,
-          titleTextStyle: const TextStyle(
+          titleTextStyle: TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.5,
           ),
-          iconTheme: const IconThemeData(color: Colors.white),
-          shape: const RoundedRectangleBorder(
+          iconTheme: IconThemeData(color: Colors.white),
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
           ),
         ),
@@ -121,6 +125,8 @@ class AgroGuardAIApp extends StatelessWidget {
         '/crop': (context) => const CropRecommendationScreen(),
         '/disease': (context) => const DiseaseDetectionScreen(),
         '/sensors': (context) => const SensorDashboardScreen(),
+        '/govt': (context) => const GovtPortalScreen(),
       },
-    );
+    ),
+  );
 }

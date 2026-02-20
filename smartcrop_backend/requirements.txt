@@ -12,3 +12,5 @@ Werkzeug==2.3.7
 opencv-python==4.8.0.74
 scipy==1.11.2
 gunicorn==21.2.0
+beautifulsoup4==4.12.2
+lxml==4.9.3

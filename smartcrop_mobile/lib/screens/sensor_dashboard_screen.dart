@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-import 'dart:math';
+import '../core/lang_provider.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Sensor Dashboard Screen – Professional Farming Theme + Animations
@@ -49,7 +49,7 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
     _fadeController.forward();
 
     _pulseController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
-    _pulse = Tween<double>(begin: 0.6, end: 1.0).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut));
+    _pulse = Tween<double>(begin: 0.6, end: 1).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut));
 
     _fetchAllData();
     _refreshTimer = Timer.periodic(const Duration(seconds: 5), (_) => _fetchAllData());
@@ -76,11 +76,11 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
         final analyticsResponse = jsonDecode(responses[1].body);
         final scenariosResponse = jsonDecode(responses[2].body);
         setState(() {
-          _sensorData     = sensorResponse['current_data'];
-          _sensorAlerts   = sensorResponse['alerts'];
-          _analytics      = analyticsResponse['analytics'];
-          _scenarios      = scenariosResponse['scenarios'] ?? {};
-          _currentScenario = scenariosResponse['current_scenario'];
+          _sensorData     = sensorResponse['current_data'] as Map<String, dynamic>?;
+          _sensorAlerts   = sensorResponse['alerts'] as List<dynamic>?;
+          _analytics      = analyticsResponse['analytics'] as Map<String, dynamic>?;
+          _scenarios      = (scenariosResponse['scenarios'] ?? {}) as Map<String, dynamic>?;
+          _currentScenario = scenariosResponse['current_scenario']?.toString();
           _errorMessage   = null;
         });
       } else {
@@ -94,8 +94,11 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
   Future<void> _setScenario(String scenario) async {
     try {
       final response = await http.post(Uri.parse('http://localhost:5000/api/sensor_scenarios/$scenario'));
-      if (response.statusCode == 200) _fetchAllData();
-      else setState(() => _errorMessage = 'Failed to switch scenario');
+      if (response.statusCode == 200) {
+        _fetchAllData();
+      } else {
+        setState(() => _errorMessage = 'Failed to switch scenario');
+      }
     } catch (e) {
       setState(() => _errorMessage = 'Error switching scenario');
     }
@@ -127,9 +130,9 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
 
   String _getStatusText(String metric, double value) {
     final color = _getStatusColor(metric, value);
-    if (color == _primary) return 'Optimal';
-    if (color == _golden) return 'Caution';
-    return 'Alert';
+    if (color == _primary) return AppStrings.t('statusOptimal');
+    if (color == _golden) return AppStrings.t('statusCaution');
+    return AppStrings.t('statusAlert');
   }
 
   String _getTrendIcon(String trend) {
@@ -138,13 +141,13 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
 
   Widget _buildHealthScoreCard() {
     if (_analytics == null) return const SizedBox.shrink();
-    final healthScore = (_analytics!['health_score'] ?? 50).toDouble();
-    final trend = _analytics!['trend'] ?? 'stable';
-    final crop  = _analytics!['crop'] ?? 'Unknown';
-    final stage = _analytics!['stage'] ?? 'Unknown';
+    final double healthScore = ((_analytics!['health_score'] ?? 50) as num).toDouble();
+    final String trend = (_analytics!['trend'] ?? 'stable').toString();
+    final String crop  = (_analytics!['crop'] ?? 'Unknown').toString();
+    final String stage = (_analytics!['stage'] ?? 'Unknown').toString();
 
-    Color scoreColor = healthScore >= 75 ? _primary : healthScore >= 50 ? _golden : _sunset;
-    String statusLabel = healthScore >= 75 ? 'Healthy' : healthScore >= 50 ? 'Fair' : 'Poor';
+    final Color scoreColor = healthScore >= 75 ? _primary : healthScore >= 50 ? _golden : _sunset;
+    final String statusLabel = healthScore >= 75 ? AppStrings.t('statusHealthy') : healthScore >= 50 ? AppStrings.t('statusFair') : AppStrings.t('statusPoor');
 
     return Container(
       decoration: BoxDecoration(
@@ -236,7 +239,10 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
                       children: [
                         Text(_getTrendIcon(trend), style: const TextStyle(fontSize: 16)),
                         const SizedBox(width: 6),
-                        Text('Trend: ${trend[0].toUpperCase()}${trend.substring(1)}',
+                        Text(
+                          trend == 'improving' ? AppStrings.t('trendImproving')
+                            : trend == 'declining' ? AppStrings.t('trendDeclining')
+                            : AppStrings.t('trendStable'),
                           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: _softText)),
                       ],
                     ),
@@ -334,10 +340,10 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
   }
 
   Widget _buildRecommendationCard(dynamic recommendation) {
-    final severity = recommendation['severity'] ?? 'info';
-    final icon     = recommendation['icon'] ?? '📋';
-    final message  = recommendation['message'] ?? '';
-    final action   = recommendation['action'] ?? '';
+    final String severity = (recommendation['severity'] ?? 'info').toString();
+    final String icon     = (recommendation['icon'] ?? '📋').toString();
+    final String message  = (recommendation['message'] ?? '').toString();
+    final String action   = (recommendation['action'] ?? '').toString();
 
     Color bgColor, textColor, borderColor;
     switch (severity) {
@@ -410,18 +416,18 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
                 child: const Icon(Icons.swap_horiz, size: 16, color: _teal),
               ),
               const SizedBox(width: 8),
-              const Text('Demo Scenarios', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: _deepText)),
+              Text(AppStrings.t('demoScenarios'), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: _deepText)),
             ],
           ),
           const SizedBox(height: 4),
-          const Text('Switch between realistic crop scenarios', style: TextStyle(fontSize: 11, color: _softText)),
+          Text(AppStrings.t('demoScenariosSub'), style: const TextStyle(fontSize: 11, color: _softText)),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8, runSpacing: 8,
             children: _scenarios!.entries.map<Widget>((entry) {
-              final key  = entry.key;
-              final name = entry.value['display_name'] ?? key;
-              final crop = entry.value['crop'] ?? '';
+              final String key  = entry.key;
+              final String name = (entry.value['display_name'] ?? key).toString();
+              final String crop = (entry.value['crop'] ?? '').toString();
               final isActive = _currentScenario == key;
               return Material(
                 borderRadius: BorderRadius.circular(10),
@@ -460,17 +466,19 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
   Widget build(BuildContext context) {
     final isWide = MediaQuery.of(context).size.width > 700;
 
-    return Scaffold(
+    return ValueListenableBuilder<String>(
+      valueListenable: AppLang.current,
+      builder: (context, _, __) => Scaffold(
       backgroundColor: _cream,
       appBar: AppBar(
         backgroundColor: _primary,
         foregroundColor: Colors.white,
-        title: const Row(
+        title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('📡', style: TextStyle(fontSize: 20)),
-            SizedBox(width: 8),
-            Text('Field Monitor', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+            const Text('📡', style: TextStyle(fontSize: 20)),
+            const SizedBox(width: 8),
+            Text(AppStrings.t('fieldMonitorTitle'), style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
           ],
         ),
         shape: const RoundedRectangleBorder(
@@ -562,7 +570,7 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
                     children: [
                       Container(width: 4, height: 20, decoration: BoxDecoration(color: _primary, borderRadius: BorderRadius.circular(2))),
                       const SizedBox(width: 8),
-                      const Text('Real-Time Sensor Data', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: _deepText)),
+                      Text(AppStrings.t('sensorData'), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: _deepText)),
                       const Spacer(),
                       if (_sensorData != null)
                         Container(
@@ -571,7 +579,7 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
                             color: _primary.withValues(alpha: 0.06),
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          child: const Text('9 Sensors', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: _primary)),
+                          child: Text(AppStrings.t('sensorCount'), style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: _primary)),
                         ),
                     ],
                   ),
@@ -605,13 +613,13 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [BoxShadow(color: _primary.withValues(alpha: 0.05), blurRadius: 10)],
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            CircularProgressIndicator(color: _primary, strokeWidth: 3),
-                            SizedBox(height: 14),
-                            Text('Connecting to sensors...', style: TextStyle(fontSize: 13, color: _softText)),
+                            const CircularProgressIndicator(color: _primary, strokeWidth: 3),
+                            const SizedBox(height: 14),
+                            Text(AppStrings.t('connecting'), style: const TextStyle(fontSize: 13, color: _softText)),
                           ],
                         ),
                       ),
@@ -625,7 +633,7 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
                       children: [
                         Container(width: 4, height: 20, decoration: BoxDecoration(color: _teal, borderRadius: BorderRadius.circular(2))),
                         const SizedBox(width: 8),
-                        const Text('Smart Recommendations', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: _deepText)),
+                        Text(AppStrings.t('smartRecs'), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: _deepText)),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -639,7 +647,7 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
                       children: [
                         Container(width: 4, height: 20, decoration: BoxDecoration(color: _sunset, borderRadius: BorderRadius.circular(2))),
                         const SizedBox(width: 8),
-                        const Text('Active Alerts', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: _deepText)),
+                        Text(AppStrings.t('activeAlerts'), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: _deepText)),
                         const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -660,9 +668,9 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
                       ),
                       child: Row(
                         children: [
-                          Text(alert['icon'] ?? '⚠️', style: const TextStyle(fontSize: 18)),
+                          Text((alert['icon'] ?? '⚠️').toString(), style: const TextStyle(fontSize: 18)),
                           const SizedBox(width: 10),
-                          Expanded(child: Text(alert['message'] ?? 'Unknown alert',
+                          Expanded(child: Text((alert['message'] ?? 'Unknown alert').toString(),
                             style: const TextStyle(color: _sunset, fontSize: 13, fontWeight: FontWeight.w500))),
                         ],
                       ),
@@ -675,6 +683,6 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
           ),
         ),
       ),
-    );
+    ));
   }
 }

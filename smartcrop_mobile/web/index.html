@@ -4,15 +4,15 @@
   <base href="$FLUTTER_BASE_HREF">
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="AgroGuard AI – AI-powered smart farming assistant for crop health, disease detection & IoT monitoring">
+  <meta name="description" content="AgroGuard AI by CoderPirates – AI-powered smart farming assistant for crop health, disease detection & IoT monitoring">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#2D6A4F">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="AgroGuard AI">
+  <meta name="apple-mobile-web-app-title" content="AgroGuard AI by CoderPirates">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="icon" type="image/png" href="favicon.png"/>
-  <title>AgroGuard AI</title>
+  <title>AgroGuard AI by CoderPirates</title>
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -83,6 +83,10 @@
       display:flex;align-items:center;justify-content:center;
       font-size:36px;
       backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      overflow:hidden;
+    }
+    .brand-icon img{
+      width:100%;height:100%;object-fit:cover;
     }
 
     .brand h1{
@@ -157,8 +161,8 @@
     <span class="leaf" style="left:85%">🌱</span>
 
     <div class="brand">
-      <div class="brand-icon">🌾</div>
-      <h1>AgroGuard AI</h1>
+      <div class="brand-icon"><img src="logo.png" alt="CoderPirates Logo" onerror="this.style.display='none';this.parentNode.textContent='🌾'"></div>
+      <h1>AgroGuard AI <span style="font-size:16px;font-weight:400;opacity:0.7">by CoderPirates</span></h1>
       <p>Smart Farming Assistant</p>
       <div class="progress-track"><div class="progress-bar"></div></div>
       <div class="status-text">Preparing your fields…</div>

@@ -28,10 +28,14 @@ logger = logging.getLogger(__name__)
 from services.crop_service import CropRecommender
 from services.disease_service import DiseaseDetector
 from services.iot_service import IOTSimulator
+from govt_integrations.govt_routes import govt_bp, init_all as init_govt
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
+
+# Register Government Portal blueprint
+app.register_blueprint(govt_bp)
 
 # Configuration
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
@@ -52,6 +56,13 @@ try:
 except Exception as e:
     logger.error(f"❌ Failed to initialize ML services: {str(e)}")
     logger.error(traceback.format_exc())
+
+# Initialize Government Portal integrations
+try:
+    init_govt()
+    logger.info("✅ Government Portal integrations initialized")
+except Exception as e:
+    logger.error(f"⚠️ Govt integrations init warning: {str(e)}")
 
 
 def allowed_file(filename):
@@ -83,6 +94,11 @@ def api_status():
             'crop_recommendation': '/api/predict_crop',
             'disease_detection': '/api/predict_disease',
             'iot_data': '/api/sensor_data',
+            'govt_mandi_prices': '/api/govt/mandi/prices',
+            'govt_advisories': '/api/govt/advisories',
+            'govt_schemes': '/api/govt/schemes',
+            'govt_insurance': '/api/govt/insurance/calculate',
+            'govt_dashboard': '/api/govt/dashboard',
             'documentation': '/docs'
         }
     }), 200

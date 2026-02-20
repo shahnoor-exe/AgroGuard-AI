@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../core/lang_provider.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Crop Recommendation Screen – Professional Farming Theme
@@ -91,8 +92,8 @@ class _CropRecommendationScreenState extends State<CropRecommendationScreen>
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         setState(() {
-          _recommendedCrop = data['crop'];
-          _confidence = data['confidence'];
+          _recommendedCrop = data['crop']?.toString();
+          _confidence = (data['confidence'] as num?)?.toDouble();
           _isLoading = false;
         });
         _resultController.forward(from: 0);
@@ -163,17 +164,19 @@ class _CropRecommendationScreenState extends State<CropRecommendationScreen>
   );
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => ValueListenableBuilder<String>(
+    valueListenable: AppLang.current,
+    builder: (context, _, __) => Scaffold(
     backgroundColor: _cream,
     appBar: AppBar(
       backgroundColor: _primary,
       foregroundColor: Colors.white,
-      title: const Row(
+      title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('🌾', style: TextStyle(fontSize: 20)),
-          SizedBox(width: 8),
-          Text('Crop Advisor', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+          const Text('🌾', style: TextStyle(fontSize: 20)),
+          const SizedBox(width: 8),
+          Text(AppStrings.t('cropAdvisorTitle'), style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
         ],
       ),
       shape: const RoundedRectangleBorder(
@@ -204,18 +207,18 @@ class _CropRecommendationScreenState extends State<CropRecommendationScreen>
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: _primary.withValues(alpha: 0.1)),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Text('🧪', style: TextStyle(fontSize: 20)),
-                    SizedBox(width: 10),
+                    const Text('🧪', style: TextStyle(fontSize: 20)),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Enter Soil & Weather Data', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: _deepText)),
-                          SizedBox(height: 2),
-                          Text('Our AI analyzes your field conditions to recommend the optimal crop',
-                            style: TextStyle(fontSize: 12, color: _softText)),
+                          Text(AppStrings.t('soilWeatherTitle'), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: _deepText)),
+                          const SizedBox(height: 2),
+                          Text(AppStrings.t('soilWeatherSub'),
+                            style: const TextStyle(fontSize: 12, color: _softText)),
                         ],
                       ),
                     ),
@@ -243,27 +246,27 @@ class _CropRecommendationScreenState extends State<CropRecommendationScreen>
                         children: [
                           Container(width: 3, height: 18, decoration: BoxDecoration(color: _primary, borderRadius: BorderRadius.circular(2))),
                           const SizedBox(width: 8),
-                          const Text('Soil Nutrients', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: _deepText)),
+                          Text(AppStrings.t('soilNutrients'), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: _deepText)),
                         ],
                       ),
                       const SizedBox(height: 14),
-                      _buildTextField(nitrogenController, 'Nitrogen (N)', 'mg/kg', Icons.science),
-                      _buildTextField(phosphorusController, 'Phosphorus (P)', 'mg/kg', Icons.science_outlined),
-                      _buildTextField(potassiumController, 'Potassium (K)', 'mg/kg', Icons.science),
+                      _buildTextField(nitrogenController, AppStrings.t('nitrogen'), 'mg/kg', Icons.science),
+                      _buildTextField(phosphorusController, AppStrings.t('phosphorus'), 'mg/kg', Icons.science_outlined),
+                      _buildTextField(potassiumController, AppStrings.t('potassium'), 'mg/kg', Icons.science),
 
                       const SizedBox(height: 8),
                       Row(
                         children: [
                           Container(width: 3, height: 18, decoration: BoxDecoration(color: const Color(0xFF264653), borderRadius: BorderRadius.circular(2))),
                           const SizedBox(width: 8),
-                          const Text('Weather & Soil Conditions', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: _deepText)),
+                          Text(AppStrings.t('weatherCond'), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: _deepText)),
                         ],
                       ),
                       const SizedBox(height: 14),
-                      _buildTextField(temperatureController, 'Temperature', '°C', Icons.thermostat),
-                      _buildTextField(humidityController, 'Humidity', '%', Icons.water_drop),
-                      _buildTextField(phController, 'pH Level', '', Icons.analytics),
-                      _buildTextField(rainfallController, 'Rainfall', 'mm', Icons.grain),
+                      _buildTextField(temperatureController, AppStrings.t('temperature'), '°C', Icons.thermostat),
+                      _buildTextField(humidityController, AppStrings.t('humidity'), '%', Icons.water_drop),
+                      _buildTextField(phController, AppStrings.t('phLevel'), '', Icons.analytics),
+                      _buildTextField(rainfallController, AppStrings.t('rainfall'), 'mm', Icons.grain),
 
                       const SizedBox(height: 8),
 
@@ -296,7 +299,7 @@ class _CropRecommendationScreenState extends State<CropRecommendationScreen>
                                     else
                                       const Icon(Icons.agriculture, color: Colors.white, size: 20),
                                     const SizedBox(width: 10),
-                                    Text(_isLoading ? 'Analyzing...' : 'Get Recommendation',
+                                    Text(_isLoading ? AppStrings.t('analyzing') : AppStrings.t('getRecommendation'),
                                       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white, letterSpacing: 0.3)),
                                   ],
                                 ),
@@ -367,7 +370,7 @@ class _CropRecommendationScreenState extends State<CropRecommendationScreen>
                                 child: const Icon(Icons.check_circle, color: _primary, size: 20),
                               ),
                               const SizedBox(width: 10),
-                              const Text('Recommended Crop', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: _deepText)),
+                              Text(AppStrings.t('recommendedCrop'), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: _deepText)),
                             ],
                           ),
                         ),
@@ -384,7 +387,7 @@ class _CropRecommendationScreenState extends State<CropRecommendationScreen>
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Text('Confidence: ', style: TextStyle(fontSize: 14, color: _softText)),
+                                  Text(AppStrings.t('confidence'), style: const TextStyle(fontSize: 14, color: _softText)),
                                   Text('${(_confidence! * 100).toStringAsFixed(1)}%',
                                     style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: _primary)),
                                 ],
@@ -411,5 +414,5 @@ class _CropRecommendationScreenState extends State<CropRecommendationScreen>
         ),
       ),
     ),
-  );
+  ));
 }
