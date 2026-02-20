@@ -42,23 +42,23 @@ class AgroGuardAIApp extends StatelessWidget {
           surface: creamBg,
         ),
         scaffoldBackgroundColor: creamBg,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: primaryGreen,
           elevation: 0,
           centerTitle: true,
           scrolledUnderElevation: 2,
-          titleTextStyle: const TextStyle(
+          titleTextStyle: TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.5,
           ),
-          iconTheme: const IconThemeData(color: Colors.white),
-          shape: const RoundedRectangleBorder(
+          iconTheme: IconThemeData(color: Colors.white),
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
           ),
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 2,
           shadowColor: primaryGreen.withValues(alpha: 0.15),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

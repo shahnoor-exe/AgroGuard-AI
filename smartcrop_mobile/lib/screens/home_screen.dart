@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   List<Widget> _buildFloatingElements() {
     final items = [
-      _FloatingLeaf(icon: '🌿', top: 120, right: 20, controller: _floatingController, delay: 0.0),
+      _FloatingLeaf(icon: '🌿', top: 120, right: 20, controller: _floatingController, delay: 0),
       _FloatingLeaf(icon: '🍃', top: 300, left: 10, controller: _floatingController, delay: 0.3),
       _FloatingLeaf(icon: '🌾', top: 500, right: 30, controller: _floatingController, delay: 0.6),
       _FloatingLeaf(icon: '☘️', top: 680, left: 25, controller: _floatingController, delay: 0.15),
@@ -442,7 +442,7 @@ class _FeatureCardState extends State<_FeatureCard> with SingleTickerProviderSta
   void initState() {
     super.initState();
     _hoverController = AnimationController(vsync: this, duration: const Duration(milliseconds: 150));
-    _scaleAnim = Tween<double>(begin: 1.0, end: 0.96).animate(
+    _scaleAnim = Tween<double>(begin: 1, end: 0.96).animate(
       CurvedAnimation(parent: _hoverController, curve: Curves.easeInOut),
     );
   }
@@ -555,7 +555,7 @@ class _FloatingLeaf extends StatelessWidget {
     child: AnimatedBuilder(
       animation: controller,
       builder: (_, child) {
-        final t = ((controller.value + delay) % 1.0);
+        final t = (controller.value + delay) % 1.0;
         final yOffset = sin(t * 2 * pi) * 12;
         final rotation = sin(t * 2 * pi) * 0.15;
         return Transform.translate(

@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
-import 'package:intl/intl.dart';
 import '../services/disease_database_service.dart';
 
 class DiseaseDetectionScreen extends StatefulWidget {

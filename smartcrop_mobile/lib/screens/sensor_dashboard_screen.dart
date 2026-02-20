@@ -49,7 +49,7 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
     _fadeController.forward();
 
     _pulseController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat(reverse: true);
-    _pulse = Tween<double>(begin: 0.6, end: 1.0).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut));
+    _pulse = Tween<double>(begin: 0.6, end: 1).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut));
 
     _fetchAllData();
     _refreshTimer = Timer.periodic(const Duration(seconds: 5), (_) => _fetchAllData());
@@ -94,8 +94,11 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
   Future<void> _setScenario(String scenario) async {
     try {
       final response = await http.post(Uri.parse('http://localhost:5000/api/sensor_scenarios/$scenario'));
-      if (response.statusCode == 200) _fetchAllData();
-      else setState(() => _errorMessage = 'Failed to switch scenario');
+      if (response.statusCode == 200) {
+        _fetchAllData();
+      } else {
+        setState(() => _errorMessage = 'Failed to switch scenario');
+      }
     } catch (e) {
       setState(() => _errorMessage = 'Error switching scenario');
     }
@@ -143,8 +146,8 @@ class _SensorDashboardScreenState extends State<SensorDashboardScreen>
     final crop  = _analytics!['crop'] ?? 'Unknown';
     final stage = _analytics!['stage'] ?? 'Unknown';
 
-    Color scoreColor = healthScore >= 75 ? _primary : healthScore >= 50 ? _golden : _sunset;
-    String statusLabel = healthScore >= 75 ? 'Healthy' : healthScore >= 50 ? 'Fair' : 'Poor';
+    final Color scoreColor = healthScore >= 75 ? _primary : healthScore >= 50 ? _golden : _sunset;
+    final String statusLabel = healthScore >= 75 ? 'Healthy' : healthScore >= 50 ? 'Fair' : 'Poor';
 
     return Container(
       decoration: BoxDecoration(

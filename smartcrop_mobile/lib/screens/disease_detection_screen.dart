@@ -177,7 +177,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
       if (!mounted) return;
       if (id != -1) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: const Text('Analysis saved successfully!'), backgroundColor: _primary),
+          const SnackBar(content: Text('Analysis saved successfully!'), backgroundColor: _primary),
         );
         await _loadHistory();
         _notesController.clear();
@@ -243,14 +243,14 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
         ),
-        bottom: TabBar(
+        bottom: const TabBar(
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white60,
-          indicatorColor: const Color(0xFFE9C46A),
+          indicatorColor: Color(0xFFE9C46A),
           indicatorWeight: 3,
           dividerHeight: 0,
-          labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
-          tabs: const [
+          labelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+          tabs: [
             Tab(icon: Icon(Icons.biotech, size: 20), text: 'New Analysis'),
             Tab(icon: Icon(Icons.history, size: 20), text: 'History'),
           ],
@@ -440,13 +440,13 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
           child: TextField(
             controller: _fieldNameController,
             style: const TextStyle(fontSize: 13),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Field name',
-              prefixIcon: const Icon(Icons.landscape_outlined, color: _accent, size: 18),
+              prefixIcon: Icon(Icons.landscape_outlined, color: _accent, size: 18),
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 14),
+              contentPadding: EdgeInsets.symmetric(vertical: 14),
             ),
           ),
         ),
@@ -832,7 +832,7 @@ class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (kb != null) _chip(kb["severity"] as String, _severityColor(kb['severity'] as String?)),
+                        if (kb != null) _chip(kb['severity'] as String, _severityColor(kb['severity'] as String?)),
                         const SizedBox(width: 6),
                         IconButton(
                           icon: const Icon(Icons.delete_outline, color: _sunset, size: 20),
