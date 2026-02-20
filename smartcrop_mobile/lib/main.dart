@@ -62,7 +62,7 @@ class AgroGuardAIApp extends StatelessWidget {
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
           ),
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 2,
           shadowColor: primaryGreen.withValues(alpha: 0.15),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
