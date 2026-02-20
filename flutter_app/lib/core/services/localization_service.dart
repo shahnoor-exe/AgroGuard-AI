@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+
+/// Localization provider for multi-language support
+class LocalizationService {
+  static const Map<String, Map<String, String>> translations = {
+    'en': {
+      'app_title': 'AgroGuard AI By CoderPirate',
+      'subtitle': 'AI-Powered Crop Disease Detection & Smart Advisory',
+      'upload_image': 'Upload Image',
+      'select_image': 'Select Image',
+      'predict_disease': 'Predict Disease',
+      'predicting': 'Predicting...',
+      'disease_detection': 'Disease Detection',
+      'upload_crop_image': 'Upload a crop image for AI-powered disease prediction',
+      'no_image_selected': 'No image selected',
+      'sensor_dashboard': 'Sensor Dashboard',
+      'real_time_readings': 'Real-time farm sensor readings',
+      'soil_moisture': 'Soil Moisture',
+      'temperature': 'Temperature',
+      'humidity': 'Humidity',
+      'prediction_history': 'Prediction History',
+      'past_predictions': 'Past crop disease predictions and recommendations',
+      'view_details': 'View Details',
+      'loading_sensors': 'Loading sensor data...',
+      'error_loading': 'Error loading data',
+      'retry': 'Retry',
+      'confidence': 'Confidence',
+      'recommendations': 'Recommendations',
+      'weather': 'Weather',
+      'export_data': 'Export Data',
+      'filters': 'Filters',
+      'analytics': 'Analytics',
+      'settings': 'Settings',
+      'language': 'Language',
+      'dark_mode': 'Dark Mode',
+      'notifications': 'Notifications',
+      'search': 'Search',
+      'no_results': 'No results found',
+      'success': 'Success',
+      'error': 'Error',
+      'warning': 'Warning',
+      'info': 'Information',
+    },
+    'es': {
+      'app_title': 'AgroGuard AI By CoderPirate',
+      'subtitle': 'Detección de Enfermedades de Cultivos Impulsada por IA y Asesoramiento Inteligente',
+      'upload_image': 'Cargar Imagen',
+      'select_image': 'Seleccionar Imagen',
+      'predict_disease': 'Predecir Enfermedad',
+      'predicting': 'Prediciendo...',
+      'disease_detection': 'Detección de Enfermedades',
+      'upload_crop_image': 'Cargue una imagen de cultivo para predicción de enfermedades impulsada por IA',
+      'no_image_selected': 'Ninguna imagen seleccionada',
+      'sensor_dashboard': 'Panel de Sensores',
+      'real_time_readings': 'Lecturas de sensores de granja en tiempo real',
+      'soil_moisture': 'Humedad del Suelo',
+      'temperature': 'Temperatura',
+      'humidity': 'Humedad',
+      'prediction_history': 'Historial de Predicciones',
+      'past_predictions': 'Predicciones pasadas de enfermedades de cultivos con recomendaciones',
+      'view_details': 'Ver Detalles',
+      'loading_sensors': 'Cargando datos del sensor...',
+      'error_loading': 'Error al cargar datos',
+      'retry': 'Reintentar',
+      'confidence': 'Confianza',
+      'recommendations': 'Recomendaciones',
+      'weather': 'Clima',
+      'export_data': 'Exportar Datos',
+      'filters': 'Filtros',
+      'analytics': 'Analítica',
+      'settings': 'Configuración',
+      'language': 'Idioma',
+      'dark_mode': 'Modo Oscuro',
+      'notifications': 'Notificaciones',
+      'search': 'Buscar',
+      'no_results': 'No se encontraron resultados',
+      'success': 'Éxito',
+      'error': 'Error',
+      'warning': 'Advertencia',
+      'info': 'Información',
+    },
+    'hi': {
+      'app_title': 'AgroGuard AI By CoderPirate',
+      'subtitle': 'AI-शक्तिचालित फसल रोग पहचान और स्मार्ट सलाह',
+      'upload_image': 'छवि अपलोड करें',
+      'select_image': 'छवि चुनें',
+      'predict_disease': 'बीमारी की भविष्यवाणी करें',
+      'predicting': 'भविष्यवाणी जारी है...',
+      'disease_detection': 'रोग पहचान',
+      'upload_crop_image': 'AI-संचालित रोग भविष्यवाणी के लिए एक फसल की छवि अपलोड करें',
+      'no_image_selected': 'कोई छवि नहीं चुनी गई',
+      'sensor_dashboard': 'सेंसर डैशबोर्ड',
+      'real_time_readings': 'रीयल-टाइम खेत के सेंसर रीडिंग',
+      'soil_moisture': 'मिट्टी की नमी',
+      'temperature': 'तापमान',
+      'humidity': 'आर्द्रता',
+      'prediction_history': 'भविष्यवाणी का इतिहास',
+      'past_predictions': 'अतीत की फसल रोग भविष्यवाणी और सिफारिशें',
+      'view_details': 'विवरण देखें',
+      'loading_sensors': 'सेंसर डेटा लोड हो रहा है...',
+      'error_loading': 'डेटा लोड करने में त्रुटि',
+      'retry': 'पुन: प्रयास करें',
+      'confidence': 'आत्मविश्वास',
+      'recommendations': 'सिफारिशें',
+      'weather': 'मौसम',
+      'export_data': 'डेटा निर्यात करें',
+      'filters': 'फ़िल्टर',
+      'analytics': 'विश्लेषण',
+      'settings': 'सेटिंग्स',
+      'language': 'भाषा',
+      'dark_mode': 'डार्क मोड',
+      'notifications': 'सूचनाएं',
+      'search': 'खोज',
+      'no_results': 'कोई परिणाम नहीं मिला',
+      'success': 'सफलता',
+      'error': 'त्रुटि',
+      'warning': 'चेतावनी',
+      'info': 'जानकारी',
+    },
+  };
+
+  static String getCurrentLanguage() {
+    final locale = WidgetsBinding.instance.window.locale.languageCode;
+    return translations.containsKey(locale) ? locale : 'en';
+  }
+
+  static String translate(String key, [String languageCode = 'en']) => translations[languageCode]?[key] ?? translations['en']?[key] ?? key;
+
+  static List<String> getSupportedLanguages() => translations.keys.toList();
+}
+
+/// Locale configuration
+class LocalizationConfig {
+  static const supportedLocales = [
+    Locale('en', 'US'),
+    Locale('es', 'ES'),
+    Locale('hi', 'IN'),
+  ];
+
+  static const fallbackLocale = Locale('en', 'US');
+}

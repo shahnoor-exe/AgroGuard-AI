@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D822D">
+  <link rel="manifest" href="manifest.json">
+
+  <title>AgroGuard AI By CoderPirate - Crop Disease Detection</title>
+
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <!-- Load Flutter Web runtime -->
+  <script defer src="main.dart.js" type="application/javascript"></script>
+
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #FAFAFA;
+      font-family: 'Roboto', sans-serif;
+    }
+    
+    #loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #2D822D 0%, #4CAF50 100%);
+      color: white;
+      font-size: 20px;
+    }
+
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-right: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">
+    <div class="spinner"></div>
+    <div>Loading AgroGuard AI...</div>
+  </div>
+  
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadDeferred("main.dart.js", function() {
+        // Remove loading screen
+        var loadingDiv = document.getElementById('loading');
+        if (loadingDiv) {
+          loadingDiv.style.display = 'none';
+        }
+      });
+    });
+  </script>
+
+  <!-- Web engines must link the Dart app otherwise pages which don't call main() become blank.
+       This Javacript must be defer so the analyzer sees the entire Dart app to resolve
+       determine `buildMode`. -->
+  <script>
+    {{flutter_js}}
+    {{flutter_build_config}}
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Shield background -->
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2ecc71;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#27ae60;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Shield shape -->
+  <path d="M 16 2 L 8 6 L 8 14 Q 8 24 16 28 Q 24 24 24 14 L 24 6 Z" fill="url(#shieldGrad)" stroke="#1e7e34" stroke-width="1"/>
+  
+  <!-- Leaf inside shield -->
+  <g transform="translate(16, 15)">
+    <!-- Leaf -->
+    <path d="M 0 0 L 0 -6 Q -4 -8 -6 -10" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M 0 0 L 0 -6 Q 4 -8 6 -10" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <circle cx="0" cy="-10" r="1.5" fill="#ffffff"/>
+  </g>
+</svg>

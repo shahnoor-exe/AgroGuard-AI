@@ -1,0 +1,44 @@
+# ── Flutter / Dart ────────────────────────────────────────────
+**/build/
+**/.dart_tool/
+**/.packages
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.pub-cache/
+**/.pub/
+**/pubspec.lock
+*.iml
+*.log
+
+# ── Python ───────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+*.egg
+venv/
+.env
+
+# ── Backend uploads & logs ───────────────────────────────────
+smartcrop_backend/uploads/*
+!smartcrop_backend/uploads/.gitkeep
+smartcrop.log
+
+# ── IDE ──────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── OS ───────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── ML models (too large for git) ────────────────────────────
+*.h5
+*.pkl
+*.pt
+*.onnx

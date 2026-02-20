@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="AgroGuard AI – AI-powered smart farming assistant for crop health, disease detection & IoT monitoring">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D6A4F">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AgroGuard AI">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <title>AgroGuard AI</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    html,body{
+      width:100%;height:100%;
+      overflow:hidden;
+      font-family:'Inter',system-ui,sans-serif;
+      background:#1B4332;
+    }
+
+    body{
+      display:flex;justify-content:center;align-items:center;
+      opacity:1;transition:opacity .4s ease;
+    }
+
+    /* ── gradient backdrop ── */
+    #splash{
+      position:fixed;inset:0;z-index:999;
+      display:flex;flex-direction:column;justify-content:center;align-items:center;
+      background:linear-gradient(160deg,#1B4332 0%,#2D6A4F 40%,#40916C 100%);
+      transition:opacity .5s ease;
+    }
+
+    /* ── animated field rows ── */
+    #splash::before{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:40%;
+      background:repeating-linear-gradient(
+        0deg,
+        transparent,transparent 18px,
+        rgba(255,255,255,0.03) 18px,rgba(255,255,255,0.03) 20px
+      );
+      mask-image:linear-gradient(to top,black,transparent);
+      -webkit-mask-image:linear-gradient(to top,black,transparent);
+      animation:fieldScroll 8s linear infinite;
+    }
+    @keyframes fieldScroll{0%{background-position:0 0}100%{background-position:0 40px}}
+
+    /* ── animated floating emojis ── */
+    .leaf{
+      position:absolute;font-size:24px;opacity:0;
+      animation:floatUp 6s ease-in-out infinite;
+      pointer-events:none;
+    }
+    .leaf:nth-child(2){left:15%;animation-delay:1.5s;font-size:20px}
+    .leaf:nth-child(3){left:70%;animation-delay:3s;font-size:28px}
+    .leaf:nth-child(4){left:40%;animation-delay:0.8s;font-size:18px}
+    .leaf:nth-child(5){left:85%;animation-delay:4.2s;font-size:22px}
+    @keyframes floatUp{
+      0%  {transform:translateY(100vh) rotate(0deg);opacity:0}
+      15% {opacity:.5}
+      85% {opacity:.4}
+      100%{transform:translateY(-60px) rotate(360deg);opacity:0}
+    }
+
+    /* ── central branding ── */
+    .brand{text-align:center;z-index:2;animation:fadeUp .8s ease-out both}
+    @keyframes fadeUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+
+    .brand-icon{
+      width:72px;height:72px;margin:0 auto 18px;
+      background:rgba(255,255,255,0.12);
+      border:2px solid rgba(255,255,255,0.2);
+      border-radius:20px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:36px;
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    }
+
+    .brand h1{
+      color:#fff;font-size:26px;font-weight:700;letter-spacing:-0.5px;
+      margin-bottom:4px;
+    }
+    .brand p{
+      color:rgba(255,255,255,0.55);font-size:13px;font-weight:400;
+      letter-spacing:0.5px;
+    }
+
+    /* ── progress bar ── */
+    .progress-track{
+      width:180px;height:4px;margin:28px auto 0;
+      background:rgba(255,255,255,0.12);
+      border-radius:4px;overflow:hidden;
+      animation:fadeUp 1s ease-out .3s both;
+    }
+    .progress-bar{
+      height:100%;width:0;
+      background:linear-gradient(90deg,#52B788,#B7E4C7);
+      border-radius:4px;
+      animation:loadProgress 2.5s ease-in-out forwards;
+    }
+    @keyframes loadProgress{0%{width:0}60%{width:70%}100%{width:100%}}
+
+    .status-text{
+      margin-top:12px;color:rgba(255,255,255,0.45);font-size:11px;
+      letter-spacing:1px;text-transform:uppercase;
+      animation:fadeUp 1s ease-out .5s both;
+    }
+
+    /* ── hide splash once Flutter renders ── */
+    .loaded #splash{opacity:0;pointer-events:none}
+  </style>
+
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      document.body.classList.add('loaded');
+      setTimeout(function(){ var s=document.getElementById('splash'); if(s) s.remove(); }, 600);
+    });
+  </script>
+
+  <script>
+    var scriptLoaded = false;
+    function loadMainDartJs() {
+      if (scriptLoaded) return;
+      scriptLoaded = true;
+      var s = document.createElement('script');
+      s.src = 'main.dart.js';
+      s.type = 'application/javascript';
+      document.body.append(s);
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + Date.now();
+        navigator.serviceWorker.register(serviceWorkerUrl).then(function () { loadMainDartJs(); });
+      });
+    } else {
+      window.addEventListener('load', function () { loadMainDartJs(); });
+    }
+  </script>
+</head>
+<body>
+  <div id="splash">
+    <!-- floating leaf emojis -->
+    <span class="leaf" style="left:25%">🌿</span>
+    <span class="leaf" style="left:15%">🍃</span>
+    <span class="leaf" style="left:70%">🌾</span>
+    <span class="leaf" style="left:40%">☘️</span>
+    <span class="leaf" style="left:85%">🌱</span>
+
+    <div class="brand">
+      <div class="brand-icon">🌾</div>
+      <h1>AgroGuard AI</h1>
+      <p>Smart Farming Assistant</p>
+      <div class="progress-track"><div class="progress-bar"></div></div>
+      <div class="status-text">Preparing your fields…</div>
+    </div>
+  </div>
+</body>
+</html>

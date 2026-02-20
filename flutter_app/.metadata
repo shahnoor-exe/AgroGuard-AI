@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "projectType": "app",
+  "upgradeYamlOnDowngrade": true,
+  "versionMajorMinor": "3.16.0"
+}
