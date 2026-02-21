@@ -114,26 +114,55 @@ AgroGuard-AI/
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Windows — One Command)
 
 ### Prerequisites
-- **Python 3.9+** (backend)
-- **Flutter 3.0+** (mobile)
+- **Python 3.10+** — [python.org](https://python.org)
+- **Flutter 3.0+** — [flutter.dev](https://flutter.dev)
 
-### 1. Start Backend
+### Step 1 — Install all dependencies (run once)
+
+Open PowerShell in the project root and run:
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass; .\setup.ps1
+```
+
+This will automatically:
+- Create a Python virtual environment
+- Install all Python packages (`smartcrop_backend/requirements.txt`)
+- Run `flutter pub get` for the mobile app
+
+### Step 2 — Launch the app (every time)
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass; .\start.ps1
+```
+
+This single command:
+- Starts the **Flask backend** at `http://localhost:5000` in a new terminal window
+- Launches the **Flutter web app** in Microsoft Edge automatically
+
+> No need to manually activate a venv, run `pip install`, or `flutter pub get` again.
+
+---
+
+### Manual Start (optional — if you prefer individual commands)
+
+**Backend:**
 ```bash
 cd smartcrop_backend
-pip install -r requirements.txt
-python app.py
+# Windows
+venv\Scripts\python.exe app.py
 ```
 Backend: **http://localhost:5000**
 
-### 2. Start Flutter App
+**Flutter App:**
 ```bash
 cd smartcrop_mobile
 flutter pub get
-flutter run                                 # device / emulator
-flutter run -d edge --web-port 8080         # browser
+flutter run -d edge        # browser (Microsoft Edge)
+flutter run                # connected device / emulator
 ```
 
 ---
