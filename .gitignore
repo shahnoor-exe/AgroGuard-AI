@@ -37,6 +37,12 @@ smartcrop.log
 Thumbs.db
 desktop.ini
 
+# ── Microsoft Office temp/lock files ─────────────────────────
+~$*
+
+# ── SQLite cache databases ────────────────────────────────────
+*.db
+
 # ── ML models (too large for git) ────────────────────────────
 *.h5
 *.pkl
